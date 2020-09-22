@@ -407,7 +407,12 @@ class AztecParser @JvmOverloads constructor(private val alignmentRendering: Alig
                 else -> withinContent(out, text, i, next, parents)
             }
 
-            i = next
+            if (next == i) {
+                // prevent infinite loops if we have a span with 0 length
+                i = next + 1
+            } else {
+                i = next
+            }
         } while (i < end)
 
         consumeCursorIfInInput(out, text, i)
